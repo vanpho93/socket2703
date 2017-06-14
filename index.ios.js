@@ -8,13 +8,16 @@ import {
 import io from 'socket.io-client';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
+import App from './components/App';
 
 const defaultState = {
   username: null,
-  arrMessage: []
+  arrMessage: [],
+  socket: null
 };
 
 const reducer = (state = defaultState, action) => {
+  if (action.type === 'SET_SOCKET') return { ...state, socket: action.socket };
   return state;
 }
 
@@ -23,45 +26,16 @@ const store = createStore(reducer);
 export default class SocketDemo extends Component {
   componentDidMount() {
       const socket = io('http://localhost:3000');
+      store.dispatch({ type: 'SET_SOCKET', socket });
   }
 
   render() {
     return (
       <Provider store={store}>
-        <View style={styles.container}>
-          <Text style={styles.welcome}>
-            Welcome to React Native!
-          </Text>
-          <Text style={styles.instructions}>
-            To get started, edit index.ios.js
-          </Text>
-          <Text style={styles.instructions}>
-            Press Cmd+R to reload,{'\n'}
-            Cmd+D or shake for dev menu
-          </Text>
-        </View>
+        <App />
       </Provider>
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
-});
 
 AppRegistry.registerComponent('SocketDemo', () => SocketDemo);
