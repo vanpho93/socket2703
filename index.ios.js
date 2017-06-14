@@ -27,6 +27,7 @@ export default class SocketDemo extends Component {
   componentDidMount() {
       const socket = io('http://localhost:3000');
       store.dispatch({ type: 'SET_SOCKET', socket });
+      socket.on('SERVER_SEND_MESSAGE', text => console.log(text));
   }
 
   render() {

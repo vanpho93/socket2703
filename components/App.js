@@ -11,7 +11,7 @@ class App extends Component {
     }
 
     sendMessageToServer() {
-        this.props.socket.emit('SEND_MESSAGE', this.state.text);
+        this.props.socket.emit('CLIENT_SEND_MESSAGE', this.state.text);
     }
 
     render() {
