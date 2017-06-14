@@ -1,58 +1,17 @@
 import React, { Component } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, TextInput } from 'react-native';
+import { View } from 'react-native';
+import SignIn from './SignIn';
+import Chat from './Chat';
 import { connect } from 'react-redux';
 
 class App extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            text: ''
-        };
-    }
-
-    sendMessageToServer() {
-        this.props.socket.emit('CLIENT_SEND_MESSAGE', this.state.text);
-    }
-
     render() {
-        return (
-            <View style={styles.container}>
-                <Text>Hello</Text>
-                <TextInput 
-                    value={this.state.text}
-                    onChangeText={text => this.setState({ text })}
-                    style={styles.input}
-                />
-                <TouchableOpacity style={styles.button} onPress={this.sendMessageToServer.bind(this)}>
-                    <Text>Send to server</Text>
-                </TouchableOpacity>
-            </View>
-        );
+        return this.props.username ? <Chat /> : <SignIn />;
     }
 }
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: 'lightblue',
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
-    input: {
-        height: 30, 
-        backgroundColor: 'white', 
-        marginHorizontal: 20,
-        paddingHorizontal: 10
-    },
-    button: {
-        margin: 20,
-        padding: 10,
-        backgroundColor: 'pink'
-    }
-});
-
 function mapStateToProps(state) {
-    return { socket: state.socket };
+    return { username: state.username };
 }
 
 export default connect(mapStateToProps)(App);
